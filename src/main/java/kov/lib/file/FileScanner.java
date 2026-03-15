@@ -24,7 +24,7 @@ public class FileScanner {
     }
 
     public void scanAndIndex(Path startPath){
-        if(Files.exists(startPath)){
+        if(!Files.exists(startPath)){
             System.out.println("Путь не существует" + startPath);
             return;
         }
@@ -40,7 +40,7 @@ public class FileScanner {
         }
     }
 
-    private void readSingleFile(Path file){
+    public void readSingleFile(Path file){
         Set<String> uniqueWords = ConcurrentHashMap.newKeySet();
 
         try(Stream<String> lines = Files.lines(file, StandardCharsets.UTF_8)){
