@@ -1,7 +1,7 @@
 package kov.lib.file;
 
 import kov.lib.index.IndexStorage;
-import kov.lib.token.RegexTokenizer;
+import kov.lib.token.Tokenizer;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -12,12 +12,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
 public class FileScanner {
-    private final RegexTokenizer tokenizer;
+    private final Tokenizer tokenizer;
     private final ExecutorService executorService;
     private final IndexStorage storage;
 
 
-    public FileScanner(RegexTokenizer tokenizer, ExecutorService executorService, IndexStorage storage) {
+    public FileScanner(Tokenizer tokenizer, ExecutorService executorService, IndexStorage storage) {
         this.tokenizer = tokenizer;
         this.executorService = executorService;
         this.storage = storage;
@@ -27,6 +27,10 @@ public class FileScanner {
         if(!Files.exists(startPath)){
             System.out.println("Путь не существует" + startPath);
             return;
+        }
+
+        if(Files.isRegularFile(startPath)){
+            executorService.submit(() -> readSingleFile(startPath));
         }
 
         try(Stream<Path> paths = Files.walk(startPath)){

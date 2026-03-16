@@ -1,6 +1,7 @@
-package kov.lib.token;
+package kov.lib.token.impl;
 
-import kov.lib.api.Tokenizer;
+import kov.lib.token.Tokenizer;
+
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;

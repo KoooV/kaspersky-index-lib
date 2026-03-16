@@ -1,4 +1,4 @@
-package kov.lib.api;
+package kov.lib.token;
 
 import java.util.Set;
 
