@@ -43,6 +43,6 @@ public class TextIndexerBuilder {
         watcherThread.setDaemon(true); // Daemon-поток умрет сам, когда завершится основная программа
         watcherThread.start();
 
-        return new TextIndexerImpl(storage, tokenizer, watcher, scanner);
+        return new TextIndexerImpl(storage, tokenizer, watcher, scanner, executor);
     }
 }

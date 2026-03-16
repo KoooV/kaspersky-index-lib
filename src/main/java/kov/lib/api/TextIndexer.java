@@ -10,4 +10,6 @@ public interface TextIndexer {
     void removeFromIndex(String path);
 
     void clearIndex();
+
+    void shutdown();
 }

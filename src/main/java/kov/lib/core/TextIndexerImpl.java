@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 
 public class TextIndexerImpl implements TextIndexer {
 
@@ -19,12 +20,14 @@ public class TextIndexerImpl implements TextIndexer {
     private final Tokenizer tokenizer;
     private final FileWatcher fileWatcher;
     private final FileScanner fileScanner;
+    private final ExecutorService executorService;
 
-    public TextIndexerImpl(IndexStorage indexStorage, Tokenizer tokenizer, FileWatcher fileWatcher, FileScanner fileScanner) {
+    public TextIndexerImpl(IndexStorage indexStorage, Tokenizer tokenizer, FileWatcher fileWatcher, FileScanner fileScanner, ExecutorService executorService) {
         this.indexStorage = indexStorage;
         this.tokenizer = tokenizer;
         this.fileWatcher = fileWatcher;
         this.fileScanner = fileScanner;
+        this.executorService = executorService;
     }
 
 
@@ -66,5 +69,12 @@ public class TextIndexerImpl implements TextIndexer {
     @Override
     public void clearIndex() {
         indexStorage.clearIndex();
+    }
+
+    @Override
+    public void shutdown() {
+        executorService.shutdownNow();
+        // Прерываем поток FileWatcher, чтобы он вышел из бесконечного цикла
+        Thread.currentThread().interrupt();
     }
 }
